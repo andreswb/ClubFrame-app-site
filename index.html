@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ClubFrame - Photography Competition Manager / Fotowettbewerb Manager / Gestor Competiciones / Gestionnaire Concours Photo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; }
+    header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    header h1 { margin: 0; font-size: 20px; display: flex; align-items: center; }
+    header h1 span { font-size: 28px; margin-right: 10px; }
+    nav a { color: white; margin: 0 10px; text-decoration: none; font-weight: 600; transition: opacity 0.3s; }
+    nav a:hover { opacity: 0.8; text-decoration: underline; }
+    .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+    h2 { color: #222; font-size: 2em; margin-bottom: 20px; }
+    h3 { color: #444; margin-top: 30px; font-size: 1.4em; }
+    ul { margin-left: 20px; line-height: 2; }
+    ul li { margin-bottom: 8px; }
+    a.button { display: inline-block; padding: 12px 30px; margin: 20px 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: transform 0.3s, box-shadow 0.3s; }
+    a.button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6); }
+    .hidden { display: none; }
+    footer { text-align: center; padding: 20px; font-size: 0.9em; color: #555; border-top: 1px solid #ccc; margin-top: 40px; }
+    select { padding: 8px 12px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.2); color: white; font-weight: 600; cursor: pointer; }
+    select option { color: #333; }
+    .faq-item { margin-bottom: 25px; background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #667eea; }
+    .faq-item strong { color: #667eea; font-size: 1.1em; display: block; margin-bottom: 10px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 30px 0; }
+    .feature-card { background: #f8f9fa; padding: 20px; border-radius: 10px; border: 2px solid #e9ecef; position: relative; }
+    .feature-card h4 { color: #667eea; margin-top: 0; }
+    .feature-card.pro { border-color: #ff9800; background: linear-gradient(135deg, rgba(255,152,0,0.05) 0%, rgba(255,152,0,0.1) 100%); }
+    .feature-card.pro h4 { color: #ff9800; }
+    .pro-badge { position: absolute; top: 10px; right: 10px; background: #ff9800; color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.7em; font-weight: bold; display: flex; align-items: center; gap: 4px; }
+    .free-badge { position: absolute; top: 10px; right: 10px; background: #4caf50; color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.7em; font-weight: bold; }
+    .note { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 5px; }
+    .note strong { color: #856404; }
+    .highlight-box { background: linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%); border: 2px solid #667eea; padding: 20px; border-radius: 10px; margin: 20px 0; }
+    .pro-box { background: linear-gradient(135deg, rgba(255,152,0,0.1) 0%, rgba(255,152,0,0.15) 100%); border: 2px solid #ff9800; padding: 25px; border-radius: 10px; margin: 30px 0; text-align: center; }
+    .pro-box h3 { color: #ff9800; margin-top: 0; }
+    .hero { text-align: center; padding: 60px 20px; background: linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%); border-radius: 10px; margin-bottom: 40px; }
+    .hero h2 { font-size: 2.5em; margin-bottom: 20px; }
+    .hero p { font-size: 1.2em; color: #555; max-width: 700px; margin: 0 auto 30px; }
+    .pricing-tier { display: inline-block; padding: 30px; margin: 20px 10px; border-radius: 15px; min-width: 280px; vertical-align: top; }
+    .pricing-tier.free { background: #f8f9fa; border: 2px solid #4caf50; }
+    .pricing-tier.pro { background: linear-gradient(135deg, rgba(255,152,0,0.1) 0%, rgba(255,152,0,0.15) 100%); border: 3px solid #ff9800; box-shadow: 0 8px 20px rgba(255,152,0,0.3); }
+    .pricing-tier h4 { margin-top: 0; font-size: 1.8em; }
+    .pricing-tier .price { font-size: 2.5em; font-weight: bold; margin: 20px 0; }
+    .pricing-tier ul { text-align: left; margin: 20px 0; padding-left: 20px; }
+    .pricing-tier ul li { margin-bottom: 12px; }
+  </style>
+  
+<script>
+  function switchLanguage(lang) {
+    document.querySelectorAll('.lang').forEach(el => el.classList.add('hidden'));
+    document.querySelectorAll('.lang-' + lang).forEach(el => el.classList.remove('hidden'));
+    document.getElementById('lang-selector').value = lang;
+  }
+
+  function showSection(section) {
+    document.querySelectorAll('.section').forEach(el => el.classList.add('hidden'));
+    const target = document.getElementById(section);
+    if (target) target.classList.remove('hidden');
+  }
+
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+
+  window.onload = function() {
+    const hash = window.location.hash.substring(1);
+    const lang = getQueryParam('lang');
+
+    if (hash === 'privacy') showSection('privacy');
+    else if (hash === 'support') showSection('support');
+    else showSection('home');
+    
+    const validLangs = ['en', 'de', 'es', 'fr'];
+    switchLanguage(validLangs.includes(lang) ? lang : 'en');
+  }
+</script>
+
+</head>
+<body>
+  <header>
+    <h1>
+      <span>📸</span>
+      ClubFrame
+    </h1>
+    <nav>
+      <a href="#home" onclick="showSection('home')">Home</a>
+      <a href="#support" onclick="showSection('support')">Support</a>
+      <a href="#privacy" onclick="showSection('privacy')">Privacy</a>
+    </nav>
+    <div>
+      <select id="lang-selector" onchange="switchLanguage(this.value)">
+        <option value="en" selected>English</option>
+        <option value="de">Deutsch</option>
+        <option value="es">Español</option>
+        <option value="fr">Français</option>
+      </select>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- HOME SECTION -->
+    <div id="home" class="section">
+
+      <!-- English -->
+      <div class="lang lang-en">
+        <div class="hero">
+          <h2>📸 Your Photography Competition Manager</h2>
+          <p>Never miss a submission deadline. Track entries, feedback, and results for all your photography competitions in one beautiful app.</p>
+          <a href="https://apps.apple.com/app/id6755918050" class="button">Download on the App Store</a>
+        </div>
+
+        <h2>Complete Competition Management</h2>
+        <p>ClubFrame helps you organize photography competitions, track submissions, manage feedback, and monitor your progress across multiple contests.</p>
+        
+        <div class="pro-box">
+          <h3>🎉 Start Free, Upgrade When Ready</h3>
+          <p><strong>Free:</strong> Up to 5 competitions, unlimited entries, 1 feedback per entry</p>
+          <p><strong>Pro (One-Time Purchase):</strong> Unlimited competitions, unlimited feedback, data export/import, competition templates</p>
+          <p style="margin-top: 20px;"><em>No subscriptions. Pay once, own forever.</em></p>
+        </div>
+
+        <h3>Free Features</h3>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <span class="free-badge">FREE</span>
+            <h4>🏆 Up to 5 Competitions</h4>
+            <p>Manage up to 5 active competitions including monthly, annual, and external contests.</p>
+          </div>
+          <div class="feature-card">
+            <span class="free-badge">FREE</span>
+            <h4>📸 Unlimited Entries</h4>
+            <p>Add as many photo entries as you want with titles, metadata, and thumbnails.</p>
+          </div>
+          <div class="feature-card">
+            <span class="free-badge">FREE</span>
+            <h4>💬 Basic Feedback (1 per entry)</h4>
+            <p>Track one judge feedback per photo with scores, comments, and judging dates.</p>
+          </div>
+          <div class="feature-card">
+            <span class="free-badge">FREE</span>
+            <h4>🔔 Smart Reminders</h4>
+            <p>Get notifications for upcoming submission deadlines and judging dates.</p>
+          </div>
+          <div class="feature-card">
+            <span class="free-badge">FREE</span>
+            <h4>📊 Basic Statistics</h4>
+            <p>View score trends, entry counts, and performance metrics.</p>
+          </div>
+          <div class="feature-card">
+            <span class="free-badge">FREE</span>
+            <h4>🔒 Complete Privacy</h4>
+            <p>All data stays on your device. No cloud sync, no servers, no data sharing.</p>
+          </div>
+        </div>
+
+        <h3>Pro Features (One-Time Purchase)</h3>
+        <div class="feature-grid">
+          <div class="feature-card pro">
+            <span class="pro-badge">👑 PRO</span>
+            <h4>🏆 Unlimited Competitions</h4>
+            <p>Create and manage as many photography competitions as you want—no limits!</p>
+          </div>
+          <div class="feature-card pro">
+            <span class="pro-badge">👑 PRO</span>
+            <h4>💬 Unlimited Feedback</h4>
+            <p>Add multiple feedback entries per photo to track detailed judge comments and scores.</p>
+          </div>
+          <div class="feature-card pro">
+            <span class="pro-badge">👑 PRO</span>
+            <h4>📤 Data Export & Import</h4>
+            <p>Export all your data to JSON or CSV. Import competitions and back up your entire library.</p>
+          </div>
+          <div class="feature-card pro">
+            <span class="pro-badge">👑 PRO</span>
+            <h4>📋 Competition Templates</h4>
+            <p>Save competition settings as reusable templates. Perfect for recurring competitions.</p>
+          </div>
+        </div>
+
+        <h3>Key Features</h3>
+        <ul>
+          <li><strong>Recurring Competitions:</strong> Set up monthly competitions with automatic period tracking</li>
+          <li><strong>Submission Requirements:</strong> Define file size, resolution, format, and color space requirements</li>
+          <li><strong>Photo Metadata Tracking:</strong> Automatically capture camera, lens, EXIF data, and location</li>
+          <li><strong>Score Trends:</strong> Visualize your progress with interactive charts</li>
+          <li><strong>Entry Management:</strong> Tag photos, mark favorites, track placement and awards</li>
+          <li><strong>Deadline Reminders:</strong> Smart notifications 7 days, 3 days, and 1 day before deadlines</li>
+          <li><strong>Offline Ready:</strong> Works perfectly without internet connection</li>
+          <li><strong>Multilingual:</strong> Available in English, German, Spanish, and French</li>
+        </ul>
+
+        <div class="note">
+          <strong>Privacy First:</strong> ClubFrame never uploads your photos or competition data to any server. Everything stays private on your device.
+        </div>
+
+        <h3>Perfect For</h3>
+        <ul>
+          <li>Photography club members tracking multiple competitions</li>
+          <li>Professional photographers managing contest submissions</li>
+          <li>Amateur photographers improving their skills</li>
+          <li>Competition organizers tracking entries and feedback</li>
+          <li>Anyone serious about photography competitions</li>
+        </ul>
+
+        <a href="https://apps.apple.com/app/id6755918050" class="button">Get Started Today - Free Download</a>
+      </div>
+
+      <!-- German -->
+      <div class="lang lang-de hidden">
+        <div class="hero">
+          <h2>📸 Ihr Fotowettbewerb-Manager</h2>
+          <p>Verpassen Sie nie eine Einreichungsfrist. Verfolgen Sie Einträge, Feedback und Ergebnisse für alle Ihre Fotowettbewerbe in einer schönen App.</p>
+          <a href="https://apps.apple.com/app/id6755918050" class="button">Im App Store herunterladen</a>
+        </div>
+
+        <h2>Komplette Wettbewerbsverwaltung</h2>
+        <p>ClubFrame hilft Ihnen, Fotowettbewerbe zu organisieren, Einreichungen zu verfolgen, Feedback zu verwalten und Ihren Fortschritt über mehrere Wettbewerbe hinweg zu überwachen.</p>
+        
+        <div class="pro-box">
+          <h3>🎉 Kostenlos Starten, Bei Bedarf Upgraden</h3>
+          <p><strong>Kostenlos:</strong> Bis zu 5 Wettbewerbe, unbegrenzte Einträge, 1 Feedback pro Eintrag</p>
+          <p><strong>Pro (Einmaliger Kauf):</strong> Unbegrenzte Wettbewerbe, unbegrenztes Feedback, Datenexport/-import, Wettbewerbsvorlagen</p>
+          <p style="margin-top: 20px;"><em>Keine Abonnements. Einmal zahlen, für immer besitzen.</em></p>
+        </div>
+
+        <h3>Kostenlose Funktionen</h3>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <span class="free-badge">KOSTENLOS</span>
+            <h4>🏆 Bis zu 5 Wettbewerbe</h4>
+            <p>Verwalten Sie bis zu 5 aktive Wettbewerbe einschließlich monatlicher, jährlicher und externer Wettbewerbe.</p>
+          </div>
+          <div class="feature-card">
+            <span class="free-badge">KOSTENLOS</span>
+            <h4>📸 Unbegrenzte Einträge</h4>
+            <p>Fügen Sie so viele Fotoeinträge hinzu, wie Sie möchten, mit Titeln, Metadaten und Miniaturansichten.</p>
+          </div>
+          <div class="feature-card">
+            <span class="free-badge">KOSTENLOS</span>
+            <h4>💬 Basis-Feedback (1 pro Eintrag)</h4>
+            <p>Verfolgen Sie ein Jury-Feedback pro Foto mit Bewertungen, Kommentaren und Bewertungsdaten.</p>
+          </div>
+          <div class="feature-card">
+            <span class="free-badge">KOSTENLOS</span>
+            <h4>🔔 Intelligente Erinnerungen</h4>
+            <p>Erhalten Sie Benachrichtigungen für bevorstehende Einreichungsfristen und Bewertungstermine.</p>
+          </div>
+          <div class="feature-card">
+            <span class="free-badge">KOSTENLOS</span>
+            <h4>📊 Grundlegende Statistiken</h4>
+            <p>Sehen Sie Bewertungstrends, Eintragsanzahl und Leistungsmetriken.</p>
+          </div>
+          <div class="feature-card">
+            <span class="free-badge">KOSTENLOS</span>
+            <h4>🔒 Vollständige Privatsphäre</h4>
+            <p>Alle Daten bleiben auf Ihrem Gerät. Keine Cloud-Synchronisation, keine Server.</p>
+          </div>
+        </div>
+
+        <h3>Pro-Funktionen (Einmaliger Kauf)</h3>
+        <div class="feature-grid">
+          <div class="feature-card pro">
+            <span class="pro-badge">👑 PRO</span>
+            <h4>🏆 Unbegrenzte Wettbewerbe</h4>
+            <p>Erstellen und verwalten Sie so viele Fotowettbewerbe wie Sie möchten—keine Grenzen!</p>
+          </div>
+          <div class="feature-card pro">
+            <span class="pro-badge">👑 PRO</span>
+            <h4>💬 Unbegrenztes Feedback</h4>
+            <p>Fügen Sie mehrere Feedback-Einträge pro Foto hinzu, um detaillierte Jurykommentare und Bewertungen zu verfolgen.</p>
+          </div>
+          <div class="feature-card pro">
+            <span class="pro-badge">👑 PRO</span>
+            <h4>📤 Datenexport & -import</h4>
+            <p>Exportieren Sie alle Ihre Daten nach JSON oder CSV. Importieren Sie Wettbewerbe und sichern Sie Ihre gesamte Bibliothek.</p>
+          </div>
+          <div class="feature-card pro">
+            <span class="pro-badge">👑 PRO</span>
+            <h4>📋 Wettbewerbsvorlagen</h4>
+            <p>Speichern Sie Wettbewerbseinstellungen als wiederverwendbare Vorlagen. Perfekt für wiederkehrende Wettbewerbe.</p>
+          </div>
+        </div>
+
+        <a href="https://apps.apple.com/app/id6755918050" class="button">Heute Starten - Kostenloser Download</a>
+      </div>
+
+      <!-- Spanish -->
+      <div class="lang lang-es hidden">
+        <div class="hero">
+          <h2>📸 Tu Gestor de Competiciones Fotográficas</h2>
+          <p>Nunca olvides una fecha límite de envío. Rastrea entradas, feedback y resultados para todas tus competiciones fotográficas en una hermosa app.</p>
+          <a href="https://apps.apple.com/app/id6755918050" class="button">Descargar en el App Store</a>
+        </div>
+
+        <h2>Gestión Completa de Competiciones</h2>
+        <p>ClubFrame te ayuda a organizar competiciones fotográficas, rastrear envíos, gestionar feedback y monitorear tu progreso en múltiples concursos.</p>
+        
+        <div class="pro-box">
+          <h3>🎉 Comienza Gratis, Actualiza Cuando Estés Listo</h3>
+          <p><strong>Gratis:</strong> Hasta 5 competiciones, entradas ilimitadas, 1 feedback por entrada</p>
+          <p><strong>Pro (Compra Única):</strong> Competiciones ilimitadas, feedback ilimitado, exportar/importar datos, plantillas de competición</p>
+          <p style="margin-top: 20px;"><em>Sin suscripciones. Paga una vez, posee para siempre.</em></p>
+        </div>
+
+        <h3>Funciones Gratuitas</h3>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <span class="free-badge">GRATIS</span>
+            <h4>🏆 Hasta 5 Competiciones</h4>
+            <p>Gestiona hasta 5 competiciones activas incluyendo concursos mensuales, anuales y externos.</p>
+          </div>
+          <div class="feature-card">
+            <span class="free-badge">GRATIS</span>
+            <h4>📸 Entradas Ilimitadas</h4>
+            <p>Añade tantas entradas de fotos como quieras con títulos, metadatos y miniaturas.</p>
+          </div>
+          <div class="feature-card">
+            <span class="free-badge">GRATIS</span>
+            <h4>💬 Feedback Básico (1 por entrada)</h4>
+            <p>Rastrea un feedback de juez por foto con puntuaciones, comentarios y fechas de evaluación.</p>
+          </div>
+          <div class="feature-card">
+            <span class="free-badge">GRATIS</span>
+            <h4>🔔 Recordatorios Inteligentes</h4>
+            <p>Recibe notificaciones para fechas límite de envío y fechas de evaluación próximas.</p>
+          </div>
+          <div class="feature-card">
+            <span class="free-badge">GRATIS</span>
+            <h4>📊 Estadísticas Básicas</h4>
+            <p>Ve tendencias de puntuación, conteos de entradas y métricas de rendimiento.</p>
+          </div>
+          <div class="feature-card">
+            <span class="free-badge">GRATIS</span>
+            <h4>🔒 Privacidad Completa</h4>
+            <p>Todos los datos permanecen en tu dispositivo. Sin sincronización en la nube, sin servidores.</p>
+          </div>
+        </div>
+
+        <h3>Funciones Pro (Compra Única)</h3>
+        <div class="feature-grid">
+          <div class="feature-card pro">
+            <span class="pro-badge">👑 PRO</span>
+            <h4>🏆 Competiciones Ilimitadas</h4>
+            <p>Crea y gestiona tantas competiciones fotográficas como quieras—¡sin límites!</p>
+          </div>
+          <div class="feature-card pro">
+            <span class="pro-badge">👑 PRO</span>
+            <h4>💬 Feedback Ilimitado</h4>
+            <p>Añade múltiples entradas de feedback por foto para rastrear comentarios detallados de jueces y puntuaciones.</p>
+          </div>
+          <div class="feature-card pro">
+            <span class="pro-badge">👑 PRO</span>
+            <h4>📤 Exportar e Importar Datos</h4>
+            <p>Exporta todos tus datos a JSON o CSV. Importa competiciones y respalda toda tu biblioteca.</p>
+          </div>
+          <div class="feature-card pro">
+            <span class="pro-badge">👑 PRO</span>
+            <h4>📋 Plantillas de Competición</h4>
+            <p>Guarda configuraciones de competición como plantillas reutilizables. Perfecto para competiciones recurrentes.</p>
+          </div>
+        </div>
+
+        <a href="https://apps.apple.com/app/id6755918050" class="button">Comienza Hoy - Descarga Gratuita</a>
+      </div>
+
+      <!-- French -->
+      <div class="lang lang-fr hidden">
+        <div class="hero">
+          <h2>📸 Votre Gestionnaire de Concours Photo</h2>
+          <p>Ne manquez plus jamais une date limite de soumission. Suivez les entrées, les retours et les résultats pour tous vos concours photo dans une belle application.</p>
+          <a href="https://apps.apple.com/app/id6755918050" class="button">Télécharger sur l'App Store</a>
+        </div>
+
+        <h2>Gestion Complète de Concours</h2>
+        <p>ClubFrame vous aide à organiser des concours photo, suivre les soumissions, gérer les retours et surveiller vos progrès à travers plusieurs concours.</p>
+        
+        <div class="pro-box">
+          <h3>🎉 Commencez Gratuitement, Passez à Pro Quand Vous Êtes Prêt</h3>
+          <p><strong>Gratuit:</strong> Jusqu'à 5 compétitions, entrées illimitées, 1 retour par entrée</p>
+          <p><strong>Pro (Achat Unique):</strong> Compétitions illimitées, retours illimités, export/import de données, modèles de compétition</p>
+          <p style="margin-top: 20px;"><em>Pas d'abonnements. Payez une fois, possédez pour toujours.</em></p>
+        </div>
+
+        <h3>Fonctionnalités Gratuites</h3>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <span class="free-badge">GRATUIT</span>
+            <h4>🏆 Jusqu'à 5 Compétitions</h4>
+            <p>Gérez jusqu'à 5 compétitions actives incluant concours mensuels, annuels et externes.</p>
+          </div>
+          <div class="feature-card">
+            <span class="free-badge">GRATUIT</span>
+            <h4>📸 Entrées Illimitées</h4>
+            <p>Ajoutez autant d'entrées de photos que vous le souhaitez avec titres, métadonnées et miniatures.</p>
+          </div>
+          <div class="feature-card">
+            <span class="free-badge">GRATUIT</span>
+            <h4>💬 Retour de Base (1 par entrée)</h4>
+            <p>Suivez un retour de juge par photo avec scores, commentaires et dates de jugement.</p>
+          </div>
+          <div class="feature-card">
+            <span class="free-badge">GRATUIT</span>
+            <h4>🔔 Rappels Intelligents</h4>
+            <p>Recevez des notifications pour les dates limites de soumission et dates de jugement à venir.</p>
+          </div>
+          <div class="feature-card">
+            <span class="free-badge">GRATUIT</span>
+            <h4>📊 Statistiques de Base</h4>
+            <p>Visualisez tendances de scores, comptages d'entrées et métriques de performance.</p>
+          </div>
+          <div class="feature-card">
+            <span class="free-badge">GRATUIT</span>
+            <h4>🔒 Confidentialité Complète</h4>
+            <p>Toutes les données restent sur votre appareil. Pas de synchronisation cloud, pas de serveurs.</p>
+          </div>
+        </div>
+
+        <h3>Fonctionnalités Pro (Achat Unique)</h3>
+        <div class="feature-grid">
+          <div class="feature-card pro">
+            <span class="pro-badge">👑 PRO</span>
+            <h4>🏆 Compétitions Illimitées</h4>
+            <p>Créez et gérez autant de concours photo que vous voulez—sans limites!</p>
+          </div>
+          <div class="feature-card pro">
+            <span class="pro-badge">👑 PRO</span>
+            <h4>💬 Retours Illimités</h4>
+            <p>Ajoutez plusieurs entrées de retour par photo pour suivre commentaires détaillés des juges et scores.</p>
+          </div>
+          <div class="feature-card pro">
+            <span class="pro-badge">👑 PRO</span>
+            <h4>📤 Export et Import de Données</h4>
+            <p>Exportez toutes vos données en JSON ou CSV. Importez compétitions et sauvegardez toute votre bibliothèque.</p>
+          </div>
+          <div class="feature-card pro">
+            <span class="pro-badge">👑 PRO</span>
+            <h4>📋 Modèles de Compétition</h4>
+            <p>Enregistrez paramètres de compétition comme modèles réutilisables. Parfait pour compétitions récurrentes.</p>
+          </div>
+        </div>
+
+        <a href="https://apps.apple.com/app/id6755918050" class="button">Commencez Aujourd'hui - Téléchargement Gratuit</a>
+      </div>
+    </div>
+
+    <!-- SUPPORT SECTION -->
+    <div id="support" class="section hidden">
+
+      <!-- English Support -->
+      <div class="lang lang-en">
+        <h2>Support & Help</h2>
+        <p>Need help with ClubFrame? We're here to assist you.</p>
+        
+        <h3>Contact</h3>
+        <p>Email: <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a></p>
+        <p>We typically respond within 24-48 hours.</p>
+        
+        <h3>Frequently Asked Questions</h3>
+        
+        <div class="faq-item">
+          <strong>What's the difference between Free and Pro?</strong>
+          <p><strong>Free:</strong> Up to 5 competitions, unlimited entries, 1 feedback per entry, basic statistics.</p>
+          <p><strong>Pro (One-Time Purchase):</strong> Unlimited competitions, unlimited feedback, data export/import, competition templates.</p>
+          <p>No subscriptions! Pay once and own forever.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>How do I upgrade to Pro?</strong>
+          <p>When you reach the limit of 5 competitions, try to add a second feedback to an entry, or access templates/export features, the app will show you the upgrade screen. You can also upgrade from Settings > Upgrade to Pro.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>How do I add a competition?</strong>
+          <p>Tap the "+" button on the Competitions screen. Fill in the competition details including title, type (monthly, annual, external, other), submission deadline, and optional judging date. You can also set up recurring monthly competitions and define submission requirements.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>What are recurring competitions?</strong>
+          <p>Recurring competitions are perfect for monthly club competitions. Instead of creating a new competition each month, set it up once with start/end dates and submission/judging days. ClubFrame automatically tracks each month's period and entries separately.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>How do I add entries to a competition?</strong>
+          <p>Open the competition detail view and tap "Add Entry". Select a photo from your library, add a title, and ClubFrame will automatically extract EXIF data including camera model, lens, settings, and GPS location if available.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Can I track multiple feedback per photo?</strong>
+          <p>Yes, with ClubFrame Pro! Free users can track 1 feedback per entry, while Pro users can add unlimited feedback from multiple judges with scores, categories, comments, and judging dates.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>How do submission requirements work?</strong>
+          <p>When creating a competition, you can define technical requirements: maximum file size, minimum resolution, required format (JPEG/HEIC/RAW), color space (sRGB/Adobe RGB/P3), and file naming conventions. These requirements are displayed as a checklist for each entry.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Can I export my competition data?</strong>
+          <p>Yes, with ClubFrame Pro! Export your entire library to JSON (with or without thumbnails) or export competitions and entries to CSV for analysis in spreadsheet apps. You can also import data to restore or migrate between devices.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>What are competition templates?</strong>
+          <p>Templates (Pro feature) let you save competition settings for reuse. Perfect for recurring competitions with the same rules. Save title template, requirements, and settings, then create new competitions instantly from your templates.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Is my data private?</strong>
+          <p>Absolutely! All your data is stored locally on your device only. ClubFrame never uploads your photos, competition data, or any information to servers. Your photography journey stays completely private.</p>
+        </div>
+        
+        <h3>Technical Support</h3>
+        <p>For technical issues, please email us with:</p>
+        <ul>
+          <li>Your device model and iOS version</li>
+          <li>Description of the issue</li>
+          <li>Steps to reproduce the problem</li>
+          <li>Screenshots if applicable</li>
+        </ul>
+        
+        <h3>System Requirements</h3>
+        <ul>
+          <li>iOS 17.0 or later</li>
+          <li>iPhone or iPad</li>
+          <li>Approximately 50 MB of storage space</li>
+        </ul>
+      </div>
+
+      <!-- German Support -->
+      <div class="lang lang-de hidden">
+        <h2>Support & Hilfe</h2>
+        <p>Benötigen Sie Hilfe mit ClubFrame? Wir sind für Sie da.</p>
+        
+        <h3>Kontakt</h3>
+        <p>E-Mail: <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a></p>
+        <p>Wir antworten normalerweise innerhalb von 24-48 Stunden.</p>
+        
+        <h3>Häufig Gestellte Fragen</h3>
+        
+        <div class="faq-item">
+          <strong>Was ist der Unterschied zwischen Kostenlos und Pro?</strong>
+          <p><strong>Kostenlos:</strong> Bis zu 5 Wettbewerbe, unbegrenzte Einträge, 1 Feedback pro Eintrag, grundlegende Statistiken.</p>
+          <p><strong>Pro (Einmaliger Kauf):</strong> Unbegrenzte Wettbewerbe, unbegrenztes Feedback, Datenexport/-import, Wettbewerbsvorlagen.</p>
+          <p>Keine Abonnements! Einmal zahlen und für immer besitzen.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Wie füge ich einen Wettbewerb hinzu?</strong>
+          <p>Tippen Sie auf die Schaltfläche "+" auf dem Wettbewerbs-Bildschirm. Füllen Sie die Wettbewerbsdetails aus einschließlich Titel, Typ und Einreichungsfrist.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Sind meine Daten privat?</strong>
+          <p>Absolut! Alle Ihre Daten werden nur lokal auf Ihrem Gerät gespeichert. ClubFrame lädt niemals Ihre Fotos oder Wettbewerbsdaten auf Server hoch.</p>
+        </div>
+      </div>
+
+      <!-- Spanish Support -->
+      <div class="lang lang-es hidden">
+        <h2>Soporte y Ayuda</h2>
+        <p>¿Necesitas ayuda con ClubFrame? Estamos aquí para asistirte.</p>
+        
+        <h3>Contacto</h3>
+        <p>Email: <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a></p>
+        <p>Normalmente respondemos en 24-48 horas.</p>
+        
+        <h3>Preguntas Frecuentes</h3>
+        
+        <div class="faq-item">
+          <strong>¿Cuál es la diferencia entre Gratis y Pro?</strong>
+          <p><strong>Gratis:</strong> Hasta 5 competiciones, entradas ilimitadas, 1 feedback por entrada, estadísticas básicas.</p>
+          <p><strong>Pro (Compra Única):</strong> Competiciones ilimitadas, feedback ilimitado, exportar/importar datos, plantillas de competición.</p>
+          <p>¡Sin suscripciones! Paga una vez y posee para siempre.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Cómo añado una competición?</strong>
+          <p>Toca el botón "+" en la pantalla de Competiciones. Completa los detalles de la competición incluyendo título, tipo y fecha límite de envío.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Son privados mis datos?</strong>
+          <p>¡Absolutamente! Todos tus datos se almacenan localmente solo en tu dispositivo. ClubFrame nunca sube tus fotos o datos de competición a servidores.</p>
+        </div>
+      </div>
+
+      <!-- French Support -->
+      <div class="lang lang-fr hidden">
+        <h2>Support et Aide</h2>
+        <p>Besoin d'aide avec ClubFrame? Nous sommes là pour vous aider.</p>
+        
+        <h3>Contact</h3>
+        <p>Email: <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a></p>
+        <p>Nous répondons généralement sous 24-48 heures.</p>
+        
+        <h3>Questions Fréquemment Posées</h3>
+        
+        <div class="faq-item">
+          <strong>Quelle est la différence entre Gratuit et Pro?</strong>
+          <p><strong>Gratuit:</strong> Jusqu'à 5 compétitions, entrées illimitées, 1 retour par entrée, statistiques de base.</p>
+          <p><strong>Pro (Achat Unique):</strong> Compétitions illimitées, retours illimités, export/import de données, modèles de compétition.</p>
+          <p>Pas d'abonnements! Payez une fois et possédez pour toujours.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Comment ajouter une compétition?</strong>
+          <p>Appuyez sur le bouton "+" sur l'écran Compétitions. Remplissez les détails de la compétition incluant titre, type et date limite de soumission.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Mes données sont-elles privées?</strong>
+          <p>Absolument! Toutes vos données sont stockées localement uniquement sur votre appareil. ClubFrame ne télécharge jamais vos photos ou données de compétition sur des serveurs.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRIVACY SECTION -->
+    <div id="privacy" class="section hidden">
+      <div class="lang lang-en">
+        <h2>Privacy Policy</h2>
+        <h3>Complete Privacy by Design</h3>
+        <p>ClubFrame is designed with your privacy as the top priority. We believe your photography competition data should stay completely private.</p>
+        <h3>No Data Collection</h3>
+        <p>ClubFrame does not collect, transmit, or share any personal data, photos, or competition information. All data stays exclusively on your device.</p>
+        <h3>Contact</h3>
+        <p>If you have questions about privacy, contact us at: <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a></p>
+        <p><em>Last updated: January 2025</em></p>
+      </div>
+
+      <div class="lang lang-de hidden">
+        <h2>Datenschutzrichtlinie</h2>
+        <h3>Vollständige Privatsphäre durch Design</h3>
+        <p>ClubFrame ist mit Ihrer Privatsphäre als oberster Priorität entwickelt. Wir glauben, dass Ihre Fotowettbewerbsdaten vollständig privat bleiben sollten.</p>
+        <h3>Keine Datenerfassung</h3>
+        <p>ClubFrame sammelt, überträgt oder teilt keine persönlichen Daten, Fotos oder Wettbewerbsinformationen. Alle Daten bleiben ausschließlich auf Ihrem Gerät.</p>
+        <h3>Kontakt</h3>
+        <p>Bei Fragen zum Datenschutz kontaktieren Sie uns: <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a></p>
+        <p><em>Zuletzt aktualisiert: Januar 2025</em></p>
+      </div>
+
+      <div class="lang lang-es hidden">
+        <h2>Política de Privacidad</h2>
+        <h3>Privacidad Completa por Diseño</h3>
+        <p>ClubFrame está diseñado con tu privacidad como máxima prioridad. Creemos que tus datos de competiciones fotográficas deben permanecer completamente privados.</p>
+        <h3>Sin Recopilación de Datos</h3>
+        <p>ClubFrame no recopila, transmite o comparte ningún dato personal, fotos o información de competiciones. Todos los datos permanecen exclusivamente en tu dispositivo.</p>
+        <h3>Contacto</h3>
+        <p>Si tienes preguntas sobre privacidad, contáctanos en: <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a></p>
+        <p><em>Última actualización: enero 2025</em></p>
+      </div>
+
+      <div class="lang lang-fr hidden">
+        <h2>Politique de Confidentialité</h2>
+        <h3>Confidentialité Complète par Conception</h3>
+        <p>ClubFrame est conçu avec votre confidentialité comme priorité absolue. Nous croyons que vos données de concours photo doivent rester complètement privées.</p>
+        <h3>Aucune Collecte de Données</h3>
+        <p>ClubFrame ne collecte, ne transmet ni ne partage aucune donnée personnelle, photo ou information de concours. Toutes les données restent exclusivement sur votre appareil.</p>
+        <h3>Contact</h3>
+        <p>Pour toute question sur la confidentialité, contactez-nous: <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a></p>
+        <p><em>Dernière mise à jour: janvier 2025</em></p>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    © 2025 ClubFrame. All rights reserved. | <a href="mailto:bandurria.apps@gmail.com">bandurria.apps@gmail.com</a><br>
+    App ID: XXXXXXXXXX | Bundle ID: cl.wetzel.ClubFrame
+  </footer>
+</body>
+</html>
